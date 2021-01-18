@@ -1,6 +1,8 @@
 const RangeList = require('./RangeList');
 const rl = new RangeList();
 
+// --  original test cases -- //
+
 rl.add([1, 5]);
 rl.print();
 // Should display: [1, 5)
@@ -40,3 +42,7 @@ rl.print();
 rl.remove([3, 19]);
 rl.print();
 // Should display: [1, 3) [19, 21)
+
+// --  additional test cases -- //
+
+

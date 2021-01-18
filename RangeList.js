@@ -5,7 +5,6 @@ class RangeList {
 	add(input) {
 		let inputIsValid = this.checkIfInputIsValid(input);
 		let data = this.data;
-		let result = null;
 		let inputLowerBound = null;
 		let inputUpperBound = null;
 		let removeStartIndex = null; // remove all ranges that overlap with input
@@ -19,7 +18,6 @@ class RangeList {
 			data.push(input); return;
 		}
 
-		result = [];
 		[ inputLowerBound, inputUpperBound ] = input;
 
 		for (let i = 0; i < data.length; i++) {
@@ -40,7 +38,7 @@ class RangeList {
 			}
 			// input overlaps with left of current range -> expand right of input
 			else if (inputLowerBound <= dataLowerBound && 
-					 inputUpperBound > dataLowerBound &&
+					 inputUpperBound >= dataLowerBound &&
 					 inputUpperBound < dataUpperBound) {
 				input[1] = dataUpperBound;
 				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
@@ -51,20 +49,19 @@ class RangeList {
 					 inputLowerBound <= dataUpperBound &&
 					 inputUpperBound >= dataUpperBound) {
 				input[0] = dataLowerBound;
-				result.push(currRange);
 				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
 				else removeEndIndex = i;
 			}
 			// input "wraps" the current range -> no change to input
-			else if (inputLowerBound < dataLowerBound &&
-					 inputUpperBound > dataUpperBound) {
+			else if (inputLowerBound <= dataLowerBound &&
+					 inputUpperBound >= dataUpperBound) {
 				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
 				else removeEndIndex = i;
 			}
 		}
 
 		// remove overlapped elements
-		if (removeStartIndex !== null &&removeEndIndex !== null)
+		if (removeStartIndex !== null && removeEndIndex !== null)
 			data.splice(removeStartIndex, removeEndIndex - removeStartIndex + 1);
 
 		// insert input
@@ -103,7 +100,7 @@ class RangeList {
 			// input overlaps with right of current range -> remove right of range
 			else if (inputLowerBound > dataLowerBound &&
 					 inputLowerBound < dataUpperBound &&
-					 inputUpperBound > dataUpperBound) {
+					 inputUpperBound >= dataUpperBound) {
 				currRange[1] = inputLowerBound;
 				result.push(currRange);
 			}
@@ -144,19 +141,19 @@ class RangeList {
 									   input[1] > input[0];
 
 		if (!isInputArray) {
-			console.log('Input is not an array.');
+			// console.log('Input is not an array.');
 			return false;
 		}
 		else if (!isLengthValid) {
-			console.log('Input array should contain two integers.');
+			// console.log('Input array should contain two integers.');
 			return false;
 		}
 		else if (!isInputInteger) {
-			console.log('Input array should contain integers only.');
+			// console.log('Input array should contain integers only.');
 			return false;
 		}
 		else if (!isSecondGreaterThanFirst) {
-			console.log('The second element should be larger than the first element.');
+			// console.log('The second element should be larger than the first element.');
 			return false;
 		}
 		else return true;
