@@ -135,29 +135,28 @@ class RangeList {
 	// helpers
 
 	checkIfInputIsValid(input) {
-		let [ inputLowerBound, inputUpperBound ] = input;
 		let isInputArray = Array.isArray(input);
-		let isLengthValid = isInputArray && input.length == 2;
+		let isLengthValid = isInputArray && input.length == 2;		
 		let isInputInteger = isLengthValid && 
-							 Number.isInteger(inputLowerBound) &&
-							 Number.isInteger(inputUpperBound);
+						 	 Number.isInteger(input[0]) &&
+							 Number.isInteger(input[1]);
 		let isSecondGreaterThanFirst = isLengthValid && 
-									   inputUpperBound > inputLowerBound;
+									   input[1] > input[0];
 
 		if (!isInputArray) {
-			// console.log('Input is not an array.');
+			console.log('Input is not an array.');
 			return false;
 		}
 		else if (!isLengthValid) {
-			// console.log('Input array should contain two integers.');
+			console.log('Input array should contain two integers.');
 			return false;
 		}
 		else if (!isInputInteger) {
-			// console.log('Input array should contain integers only.');
+			console.log('Input array should contain integers only.');
 			return false;
 		}
 		else if (!isSecondGreaterThanFirst) {
-			// console.log('The second element should be larger than the first element.');
+			console.log('The second element should be larger than the first element.');
 			return false;
 		}
 		else return true;
