@@ -1,0 +1,22 @@
+{
+  "name": "rangelist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "RangeList.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terrancelaw/RangeList.git"
+  },
+  "author": "Terrance Law",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/terrancelaw/RangeList/issues"
+  },
+  "homepage": "https://github.com/terrancelaw/RangeList#readme",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}

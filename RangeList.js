@@ -114,20 +114,11 @@ class RangeList {
 		this.data = result;
 	}
 	print() {
-		let data = this.data;
-		let outputString = '';
-
-		for (let i = 0; i < data.length; i++) {
-			let currRange = data[i];
-			let [ dataLowerBound, dataUpperBound ] = currRange;
-
-			outputString += (i != data.length - 1) // add a space if not last element
-						  ? `[${ dataLowerBound }, ${ dataUpperBound }) `
-						  : `[${ dataLowerBound }, ${ dataUpperBound })`;
-		}
+		let outputString = this.createOutputString();
 
 		console.log(outputString);
 	}
+
 
 	// helpers
 
@@ -157,6 +148,21 @@ class RangeList {
 			return false;
 		}
 		else return true;
+	}
+	createOutputString() {
+		let data = this.data;
+		let outputString = '';
+
+		for (let i = 0; i < data.length; i++) {
+			let currRange = data[i];
+			let [ dataLowerBound, dataUpperBound ] = currRange;
+
+			outputString += (i != data.length - 1) // add a space if not last element
+						  ? `[${ dataLowerBound }, ${ dataUpperBound }) `
+						  : `[${ dataLowerBound }, ${ dataUpperBound })`;
+		}
+
+		return outputString;
 	}
 }
 
