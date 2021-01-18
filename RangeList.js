@@ -8,6 +8,9 @@ class RangeList {
 		let result = null;
 		let inputLowerBound = null;
 		let inputUpperBound = null;
+		let removeStartIndex = null; // remove all ranges that overlap with input
+		let removeEndIndex = null; // remove all ranges that overlap with input
+		let insertIndex = 0; // index to insert input
 
 		if (!inputIsValid)
 			return;
@@ -23,45 +26,49 @@ class RangeList {
 			let currRange = data[i];
 			let [ dataLowerBound, dataUpperBound ] = currRange;
 
-			// input is inside the current range
-			if (inputLowerBound >= dataLowerBound && 
-				inputUpperBound <= dataUpperBound) {
-				result.push(currRange);
+			// input not overlap with curr but input is bigger -> insert after curr range
+			if (inputLowerBound > dataUpperBound) {
+				insertIndex = i + 1;
 			}
-			// input overlaps with left of current range
-			else if (inputLowerBound < dataLowerBound && 
+			// input is strictly inside the current range -> expand input from both sides
+			else if (inputLowerBound > dataLowerBound && 
+				inputUpperBound < dataUpperBound) {
+				input[0] = dataLowerBound;
+				input[1] = dataUpperBound;
+				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				else removeEndIndex = i;
+			}
+			// input overlaps with left of current range -> expand right of input
+			else if (inputLowerBound <= dataLowerBound && 
 					 inputUpperBound > dataLowerBound &&
-					 inputUpperBound <= dataUpperBound) {
-				currRange[0] = inputLowerBound;
-				result.push(currRange);
+					 inputUpperBound < dataUpperBound) {
+				input[1] = dataUpperBound;
+				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				else removeEndIndex = i;
 			}
-			// input overlaps with right of current range
-			else if (inputLowerBound >= dataLowerBound &&
-					 inputLowerBound < dataUpperBound &&
-					 inputUpperBound > dataUpperBound) {
-				currRange[1] = inputUpperBound;
+			// input overlaps with right of current range -> expand left of input
+			else if (inputLowerBound > dataLowerBound &&
+					 inputLowerBound <= dataUpperBound &&
+					 inputUpperBound >= dataUpperBound) {
+				input[0] = dataLowerBound;
 				result.push(currRange);
+				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				else removeEndIndex = i;
 			}
-			// input "wraps" the current range
+			// input "wraps" the current range -> no change to input
 			else if (inputLowerBound < dataLowerBound &&
 					 inputUpperBound > dataUpperBound) {
-				currRange[0] = inputLowerBound;
-				currRange[1] = inputUpperBound;
-				result.push(currRange);
-			}
-			// input not overlapp with current range and input is smaller
-			else if (inputUpperBound <= dataLowerBound) {
-				result.push(input);
-				result.push(currRange);
-			}
-			// input not overlapp with current range and input is bigger
-			else if (inputLowerBound >= dataUpperBound) {
-				result.push(currRange);
-				result.push(input);
+				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				else removeEndIndex = i;
 			}
 		}
 
-		this.data = result;
+		// remove overlapped elements
+		if (removeStartIndex !== null &&removeEndIndex !== null)
+			data.splice(removeStartIndex, removeEndIndex - removeStartIndex + 1);
+
+		// insert input
+		data.splice(insertIndex, 0, input);
 	}
 	remove(input) {
 		let inputIsValid = this.checkIfInputIsValid(input);
@@ -78,30 +85,31 @@ class RangeList {
 
 		for (let i = 0; i < data.length; i++) {
 			let currRange = data[i];
-			let [ dataLowerBound, dataUpperBound ] = currRange;
+			let [ dataLowerBound, dataUpperBound ] = currRange;		
 
 			// input is strictly inside the current range -> split range
 			if (inputLowerBound > dataLowerBound &&
 				inputUpperBound < dataUpperBound) {
 				result.push([ dataLowerBound, inputLowerBound ]);
-				result.push([ inputUpperBound + 1, dataUpperBound ]);
+				result.push([ inputUpperBound, dataUpperBound ]);
 			}
 			// input overlaps with left of current range -> remove left of range
 			else if (inputLowerBound <= dataLowerBound &&
 					 inputUpperBound > dataLowerBound &&
 					 inputUpperBound < dataUpperBound) {
-				currRange[1] = inputLowerBound;
+				currRange[0] = inputUpperBound;
 				result.push(currRange);
 			}
 			// input overlaps with right of current range -> remove right of range
 			else if (inputLowerBound > dataLowerBound &&
-					 inputLowerBound < dataLowerBound &&
+					 inputLowerBound < dataUpperBound &&
 					 inputUpperBound > dataUpperBound) {
-				currRange[0] = inputUpperBound;
+				currRange[1] = inputLowerBound;
 				result.push(currRange);
 			}
-			// no need to change range
-			else {
+			// no overlapping -> no need to change range
+			else if (inputLowerBound >= dataUpperBound ||
+					 inputUpperBound <= dataLowerBound) {
 				result.push(currRange);
 			}
 		}
@@ -137,19 +145,19 @@ class RangeList {
 									   inputUpperBound > inputLowerBound;
 
 		if (!isInputArray) {
-			console.log('Input is not an array.');
+			// console.log('Input is not an array.');
 			return false;
 		}
 		else if (!isLengthValid) {
-			console.log('Input array should contain two integers.');
+			// console.log('Input array should contain two integers.');
 			return false;
 		}
 		else if (!isInputInteger) {
-			console.log('Input array should contain integers only.');
+			// console.log('Input array should contain integers only.');
 			return false;
 		}
 		else if (!isSecondGreaterThanFirst) {
-			console.log('The second element should be larger than the first element.');
+			// console.log('The second element should be larger than the first element.');
 			return false;
 		}
 		else return true;
