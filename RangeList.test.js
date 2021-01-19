@@ -77,27 +77,72 @@ test('add test: overlap with multiple intervals', () => {
 	expect(rl2.createOutputString()).toBe('[10, 50)');
 });
 
-// test('add test: fully encapsulated by an existing interval', () => {
+test('add test: fully encapsulated by an existing interval', () => {
+	const rl = new RangeList();
 
-// });
+	rl.add([0, 100]);
+	rl.add([0, 10]);
+	expect(rl.createOutputString()).toBe('[0, 100)');
 
-// test('add test: fully encapsulate an existing interval', () => {
+	rl.add([50, 70]);
+	expect(rl.createOutputString()).toBe('[0, 100)');
+});
 
-// });
+test('add test: fully encapsulate an existing interval', () => {
+	const rl = new RangeList();
 
-// test('remove test: splitting an existing interval', () => {
+	rl.add([0, 10]);
+	rl.add([-5, 100]);
+	expect(rl.createOutputString()).toBe('[-5, 100)');
 
-// });
+	rl.add([-20, 200]);
+	expect(rl.createOutputString()).toBe('[-20, 200)');
+});
 
-// test('remove test: remove an interval from the right', () => {
+test('remove test: splitting an existing interval', () => {
+	const rl = new RangeList();
 
-// });
+	rl.add([0, 100]);
+	rl.remove([50, 51]);
+	expect(rl.createOutputString()).toBe('[0, 50) [51, 100)');
 
-// test('remove test: remove an interval from the left', () => {
+	rl.remove([10, 20]);
+	rl.remove([70, 80]);
+	expect(rl.createOutputString()).toBe('[0, 10) [20, 50) [51, 70) [80, 100)');
+});
 
-// });
+test('remove test: remove an interval from the right', () => {
+	const rl = new RangeList();
 
-// test('remove test: remove multiple intervals', () => {
+	rl.add([0, 100]);
+	rl.remove([80, 100]);
+	expect(rl.createOutputString()).toBe('[0, 80)');
 
-// });
+	rl.remove([60, 100]);
+	expect(rl.createOutputString()).toBe('[0, 60)');
+});
 
+test('remove test: remove an interval from the left', () => {
+	const rl = new RangeList();
+
+	rl.add([0, 100]);
+	rl.remove([0, 20]);
+	expect(rl.createOutputString()).toBe('[20, 100)');
+
+	rl.remove([-20, 50]);
+	expect(rl.createOutputString()).toBe('[50, 100)');
+});
+
+test('remove test: remove multiple intervals', () => {
+	const rl = new RangeList();
+
+	rl.add([10, 15]);
+	rl.add([20, 25]);
+	rl.add([30, 35]);
+	rl.add([40, 45]);
+	rl.remove([10, 44]);
+	expect(rl.createOutputString()).toBe('[44, 45)');
+
+	rl.remove([44, 45]);
+	expect(rl.createOutputString()).toBe('');
+});
