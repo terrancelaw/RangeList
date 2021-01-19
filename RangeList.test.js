@@ -133,6 +133,24 @@ test('remove test: remove an interval from the left', () => {
 	expect(rl.createOutputString()).toBe('[50, 100)');
 });
 
+test('remove test: remove between two intervals', () => {
+	const rl = new RangeList();
+
+	rl.add([10, 15]);
+	rl.add([20, 25]);
+	rl.add([30, 50]);
+	rl.add([60, 80]);
+	rl.add([90, 100]);
+	rl.remove([35, 65]);
+	expect(rl.createOutputString()).toBe('[10, 15) [20, 25) [30, 35) [65, 80) [90, 100)');
+
+	rl.remove([12, 32]);
+	expect(rl.createOutputString()).toBe('[10, 12) [32, 35) [65, 80) [90, 100)');
+
+	rl.remove([35, 70]);
+	expect(rl.createOutputString()).toBe('[10, 12) [32, 35) [70, 80) [90, 100)');
+});
+
 test('remove test: remove multiple intervals', () => {
 	const rl = new RangeList();
 
