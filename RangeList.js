@@ -33,7 +33,7 @@ class RangeList {
 				inputUpperBound < dataUpperBound) {
 				input[0] = dataLowerBound;
 				input[1] = dataUpperBound;
-				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				if (removeStartIndex === null) removeStartIndex = removeEndIndex = i;
 				else removeEndIndex = i;
 			}
 			// input overlaps with left of current range -> expand right of input
@@ -41,7 +41,7 @@ class RangeList {
 					 inputUpperBound >= dataLowerBound &&
 					 inputUpperBound < dataUpperBound) {
 				input[1] = dataUpperBound;
-				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				if (removeStartIndex === null) removeStartIndex = removeEndIndex = i;
 				else removeEndIndex = i;
 			}
 			// input overlaps with right of current range -> expand left of input
@@ -49,13 +49,13 @@ class RangeList {
 					 inputLowerBound <= dataUpperBound &&
 					 inputUpperBound >= dataUpperBound) {
 				input[0] = dataLowerBound;
-				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				if (removeStartIndex === null) removeStartIndex = removeEndIndex = i;
 				else removeEndIndex = i;
 			}
 			// input "wraps" the current range -> no change to input
 			else if (inputLowerBound <= dataLowerBound &&
 					 inputUpperBound >= dataUpperBound) {
-				if (!removeStartIndex) removeStartIndex = removeEndIndex = i;
+				if (removeStartIndex === null) removeStartIndex = removeEndIndex = i;
 				else removeEndIndex = i;
 			}
 		}
