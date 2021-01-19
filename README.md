@@ -4,7 +4,7 @@ A simple implementation of RangeList using JavaScript list.
 
 ## Quick Overview
 
-The class `RangeList` can be found in the file `RangeList.js`. Testing of `RangeList` can be found in `RangeList.test.js`. `RangeList.test.js` provides additional tests besides the original tests.
+The class `RangeList` can be found in the file `RangeList.js`. Tests for `RangeList` can be found in `RangeList.test.js`. `RangeList.test.js` provides additional tests besides the original tests.
 
 ## Testing
 
@@ -20,4 +20,4 @@ After installing [jest](https://jestjs.io), enter this command:
 npm test
 ```
 
-You can add additional test cases to the file `RangeList.test.js`.
+You could add additional test cases to the file `RangeList.test.js`.
